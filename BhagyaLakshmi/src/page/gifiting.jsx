@@ -11,7 +11,7 @@ const GIFTING_CATEGORIES = [
     description: "Make your baby's arrival extra special with our customised sweet treats. Perfect for baby showers, naming ceremonies, and birth announcements.",
     bgGradient: "linear-gradient(135deg, #FFF5F0, #FFE8E0)",
     accentColor: "#E8A0A0",
-    image: "/src/assets/menu/Birth Announcements.png",
+    image: "/menu/Birth Announcements.png",
     products: [
       { name: "Personalised Baby Name Cookies", price: "₹299/dozen", desc: "Custom cookies with baby's name and birth details" },
       { name: "It's a Boy/Girl Cupcakes", price: "₹399/box", desc: "Blue or pink themed cupcakes with toppers" },
@@ -27,7 +27,7 @@ const GIFTING_CATEGORIES = [
     description: "Custom desserts tailored to your preferences. From name engravings to photo prints, we make every dessert uniquely yours.",
     bgGradient: "linear-gradient(135deg, #FFF0F5, #FFE4EE)",
     accentColor: "#C8A0D8",
-    image: "/src/assets/menu/Personalised Desserts.png",
+    image: "/menu/Personalised Desserts.png",
     products: [
       { name: "Photo Print Cake", price: "₹999/kg", desc: "Edible photo print on your favorite cake flavor" },
       { name: "Name Engraved Cheesecake", price: "₹599", desc: "Personalised message engraved on creamy cheesecake" },
@@ -43,7 +43,7 @@ const GIFTING_CATEGORIES = [
     description: "Elegant and luxurious dessert hampers for weddings, engagements, and anniversaries. Perfect for guests and wedding parties.",
     bgGradient: "linear-gradient(135deg, #FFF5E8, #FFEDD8)",
     accentColor: "#D4AF37",
-    image: "/src/assets/menu/Wedding Gifting.png",
+    image: "/menu/Wedding Gifting.png",
     products: [
       { name: "Wedding Favours Box", price: "₹199/box", desc: "Assorted sweets in elegant packaging" },
       { name: "Couple Name Macarons", price: "₹799/dozen", desc: "Macarons printed with couple's names" },
@@ -59,7 +59,7 @@ const GIFTING_CATEGORIES = [
     description: "Premium corporate gift boxes that leave a lasting impression. Custom branding available for bulk orders.",
     bgGradient: "linear-gradient(135deg, #E8F4F0, #DEEEE8)",
     accentColor: "#6BB5A0",
-    image: "/src/assets/menu/Corporate Gifting.png",
+    image: "/menu/Corporate Gifting.png",
     products: [
       { name: "Corporate Hamper", price: "₹999/box", desc: "Branded box with premium sweets" },
       { name: "Festive Gift Box", price: "₹599/box", desc: "Seasonal treats in festive packaging" },

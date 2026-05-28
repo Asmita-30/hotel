@@ -9,9 +9,9 @@ const MENU_DATA = {
     description: "Freshly baked everyday with premium ingredients",
     bgGradient: "linear-gradient(135deg, #FFF5E6, #FFE8D4)",
     items: [
-      { id: 1, name: "Belgian Chocolate Macron", price: 80, desc: "Crispy almond shell with rich Belgian chocolate ganache", image: "/src/assets/menu/Belgian Chocolate Macron.png", tag: "Bestseller", calories: "180 cal" },
-      { id: 2, name: "Red Velvet Cupcake", price: 80, desc: "Velvety red sponge with cream cheese frosting", image: "/src/assets/menu/Red Velvet Cupcake.png", tag: "Popular", calories: "210 cal" },
-      { id: 3, name: "Burnt Basque Cheesecake", price: 180, desc: "Caramelized crust with creamy custard centre", image: "/src/assets/menu/Burnt Basque Cheesecake.png", tag: "Signature", calories: "320 cal" }
+      { id: 1, name: "Belgian Chocolate Macron", price: 80, desc: "Crispy almond shell with rich Belgian chocolate ganache", image: "/menu/Belgian Chocolate Macron.png", tag: "Bestseller", calories: "180 cal" },
+      { id: 2, name: "Red Velvet Cupcake", price: 80, desc: "Velvety red sponge with cream cheese frosting", image: "/menu/Red Velvet Cupcake.png", tag: "Popular", calories: "210 cal" },
+      { id: 3, name: "Burnt Basque Cheesecake", price: 180, desc: "Caramelized crust with creamy custard centre", image: "/menu/Burnt Basque Cheesecake.png", tag: "Signature", calories: "320 cal" }
     ]
   },
   chaat: {
@@ -20,9 +20,9 @@ const MENU_DATA = {
     description: "Authentic street-style chaats bursting with flavors",
     bgGradient: "linear-gradient(135deg, #FFF0E0, #FFE4CC)",
     items: [
-      { id: 4, name: "Cheese Sev Puri", price: 100, desc: "Crispy puri topped with cheese, sev & chutneys", image: "/src/assets/menu/Cheese Sev Puri.png", tag: "Cheesy", calories: "250 cal" },
-      { id: 5, name: "Dahi Ragda Puri", price: 70, desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/src/assets/menu/Dahi Ragda Puri.png", tag: "Classic", calories: "190 cal" },
-      { id: 6, name: "Palak Patta Chaat", price: 80, desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/src/assets/menu/Palak Patta Chaat.png", tag: "Crispy", calories: "170 cal" }
+      { id: 4, name: "Cheese Sev Puri", price: 100, desc: "Crispy puri topped with cheese, sev & chutneys", image: "/menu/Cheese Sev Puri.png", tag: "Cheesy", calories: "250 cal" },
+      { id: 5, name: "Dahi Ragda Puri", price: 70, desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/menu/Dahi Ragda Puri.png", tag: "Classic", calories: "190 cal" },
+      { id: 6, name: "Palak Patta Chaat", price: 80, desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/menu/Palak Patta Chaat.png", tag: "Crispy", calories: "170 cal" }
     ]
   },
   pavbhaji: {
@@ -31,9 +31,9 @@ const MENU_DATA = {
     description: "Mumbai's favorite street food, made with love",
     bgGradient: "linear-gradient(135deg, #FFF2E3, #FFE6D0)",
     items: [
-      { id: 7, name: "Cheese Pav Bhaji", price: 150, desc: "Buttery pav with spicy bhaji & melted cheese", image: "/src/assets/menu/Cheese Pav Bhaji.png", tag: "Cheesy", calories: "380 cal" },
-      { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, desc: "Rich paneer bhaji with extra cheese pull", image: "/src/assets/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium", calories: "420 cal" },
-      { id: 9, name: "Cheese Masala Pav", price: 120, desc: "Spicy masala pav topped with melted cheese", image: "/src/assets/menu/Cheese Masala Pav.png", tag: "Spicy", calories: "290 cal" }
+      { id: 7, name: "Cheese Pav Bhaji", price: 150, desc: "Buttery pav with spicy bhaji & melted cheese", image: "/menu/Cheese Pav Bhaji.png", tag: "Cheesy", calories: "380 cal" },
+      { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, desc: "Rich paneer bhaji with extra cheese pull", image: "/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium", calories: "420 cal" },
+      { id: 9, name: "Cheese Masala Pav", price: 120, desc: "Spicy masala pav topped with melted cheese", image: "/menu/Cheese Masala Pav.png", tag: "Spicy", calories: "290 cal" }
     ]
   },
   shakes: {
@@ -42,9 +42,9 @@ const MENU_DATA = {
     description: "Refreshing shakes and coolers to beat the heat",
     bgGradient: "linear-gradient(135deg, #E8F4F8, #DDEFF5)",
     items: [
-      { id: 10, name: "Choco Nutella Shake", price: 120, desc: "Hazelnut cocoa shake topped with whipped cream", image: "/src/assets/menu/Choco Nutella Shake.png", tag: "Indulgent", calories: "450 cal" },
-      { id: 11, name: "Mango Shake", price: 150, desc: "Fresh alphonso mango thick shake", image: "/src/assets/menu/Mango Shake.png", tag: "Seasonal", calories: "380 cal" },
-      { id: 12, name: "Green Apple Mojito", price: 90, desc: "Zesty mint & green apple cooler with soda", image: "/src/assets/menu/Green Apple Mojito.png", tag: "Refreshing", calories: "120 cal" }
+      { id: 10, name: "Choco Nutella Shake", price: 120, desc: "Hazelnut cocoa shake topped with whipped cream", image: "/menu/Choco Nutella Shake.png", tag: "Indulgent", calories: "450 cal" },
+      { id: 11, name: "Mango Shake", price: 150, desc: "Fresh alphonso mango thick shake", image: "/menu/Mango Shake.png", tag: "Seasonal", calories: "380 cal" },
+      { id: 12, name: "Green Apple Mojito", price: 90, desc: "Zesty mint & green apple cooler with soda", image: "/menu/Green Apple Mojito.png", tag: "Refreshing", calories: "120 cal" }
     ]
   },
   fastfood: {
@@ -53,9 +53,9 @@ const MENU_DATA = {
     description: "Gourmet fast food made with quality ingredients",
     bgGradient: "linear-gradient(135deg, #FFF0E8, #FFE6DA)",
     items: [
-      { id: 13, name: "Paneer Mozzarella Burger", price: 280, desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/src/assets/menu/Paneer Mozzarella Burger.png", tag: "Gourmet", calories: "550 cal" },
-      { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/src/assets/menu/Smoky Barbeque Cottage.png", tag: "Bestseller", calories: "620 cal" },
-      { id: 15, name: "Cheese Loaded Nachos", price: 300, desc: "Crispy nachos with four cheese sauce & salsa", image: "/src/assets/menu/Cheese Loaded Nachos.png", tag: "Loaded", calories: "480 cal" }
+      { id: 13, name: "Paneer Mozzarella Burger", price: 280, desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/menu/Paneer Mozzarella Burger.png", tag: "Gourmet", calories: "550 cal" },
+      { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/menu/Smoky Barbeque Cottage.png", tag: "Bestseller", calories: "620 cal" },
+      { id: 15, name: "Cheese Loaded Nachos", price: 300, desc: "Crispy nachos with four cheese sauce & salsa", image: "/menu/Cheese Loaded Nachos.png", tag: "Loaded", calories: "480 cal" }
     ]
   },
   desserts: {
@@ -64,9 +64,9 @@ const MENU_DATA = {
     description: "Decadent desserts to satisfy your sweet cravings",
     bgGradient: "linear-gradient(135deg, #FFF0F0, #FFE4E4)",
     items: [
-      { id: 16, name: "Nutella Kunafa", price: 220, desc: "Crispy kunafa with creamy Nutella filling", image: "/src/assets/menu/Nutella Kunafa.png", tag: "Trending", calories: "520 cal" },
-      { id: 17, name: "Ferrero Brownie", price: 110, desc: "Fudgy brownie topped with Ferrero Rocher", image: "/src/assets/menu/Ferrero Brownie.png", tag: "Premium", calories: "350 cal" },
-      { id: 18, name: "Mango Falooda", price: 180, desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/src/assets/menu/Mango Falooda.png", tag: "Refreshing", calories: "420 cal" }
+      { id: 16, name: "Nutella Kunafa", price: 220, desc: "Crispy kunafa with creamy Nutella filling", image: "/menu/Nutella Kunafa.png", tag: "Trending", calories: "520 cal" },
+      { id: 17, name: "Ferrero Brownie", price: 110, desc: "Fudgy brownie topped with Ferrero Rocher", image: "/menu/Ferrero Brownie.png", tag: "Premium", calories: "350 cal" },
+      { id: 18, name: "Mango Falooda", price: 180, desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/menu/Mango Falooda.png", tag: "Refreshing", calories: "420 cal" }
     ]
   },
   signatures: {
@@ -75,9 +75,9 @@ const MENU_DATA = {
     description: "Our signature creations made with finest ingredients",
     bgGradient: "linear-gradient(135deg, #F5EDE0, #EDE0CC)",
     items: [
-      { id: 19, name: "Pista Kunafa", price: 250, desc: "Persian pistachio cream & crushed pistachios", image: "/src/assets/menu/Pista Kunafa.png", tag: "Signature", calories: "550 cal" },
-      { id: 20, name: "Lotus Biscoff Kunafa", price: 220, desc: "Caramelised biscuit spread with Lotus crunch", image: "/src/assets/menu/Lotus Biscoff Kunafa.png", tag: "Trending", calories: "530 cal" },
-      { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, desc: "Almond filled kataif pastry nest with honey", image: "/src/assets/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan", calories: "500 cal" }
+      { id: 19, name: "Pista Kunafa", price: 250, desc: "Persian pistachio cream & crushed pistachios", image: "/menu/Pista Kunafa.png", tag: "Signature", calories: "550 cal" },
+      { id: 20, name: "Lotus Biscoff Kunafa", price: 220, desc: "Caramelised biscuit spread with Lotus crunch", image: "/menu/Lotus Biscoff Kunafa.png", tag: "Trending", calories: "530 cal" },
+      { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, desc: "Almond filled kataif pastry nest with honey", image: "/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan", calories: "500 cal" }
     ]
   }
 };

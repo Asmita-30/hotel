@@ -279,7 +279,7 @@ export default function Header({ onNavigate, currentPage }) {
           border-radius: 50%;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justifyContent: center;
           transition: all 0.25s ease;
           color: #2C1810;
         }
@@ -554,7 +554,7 @@ export default function Header({ onNavigate, currentPage }) {
             whileTap={{ scale: 0.98 }}
           >
             <motion.img
-              src="/src/assets/logo.png"
+              src="/logo.png"
               alt="BhagyaLakshmi Logo"
               className="logo-image"
               whileHover={{ rotate: 5 }}
@@ -703,7 +703,7 @@ export default function Header({ onNavigate, currentPage }) {
                 transition={{ delay: 0.1 }}
                 onClick={() => handleNavigation("shop")}
               >
-                <img src="/src/assets/logo.png" alt="Logo" className="logo-image" style={{ width: 40, height: 40 }}
+                <img src="/logo.png" alt="Logo" className="logo-image" style={{ width: 40, height: 40 }}
                   onError={(e) => { e.target.style.display = "none"; }} />
                 <div className="logo-text">
                   <span className="logo-name" style={{ fontSize: "1.1rem" }}>BhagyaLakshmi</span>

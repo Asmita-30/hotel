@@ -541,7 +541,7 @@ export default function Footer() {
             <motion.div className="brand-col" variants={itemVariants}>
               <div className="footer-logo">
                 <motion.img
-                  src="/src/assets/logo.png"
+                  src="/logo.png"
                   alt="BhagyaLakshmi Logo"
                   className="footer-logo-img floating"
                   whileHover={{ rotate: 5, scale: 1.05 }}

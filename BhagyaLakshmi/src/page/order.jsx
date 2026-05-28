@@ -3,27 +3,27 @@ import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion"
 
 // Menu Items Data
 const MENU_ITEMS = [
-  { id: 1, name: "Belgian Chocolate Macron", price: 80, category: "Bakery", desc: "Crispy shell with rich Belgian chocolate ganache", image: "/src/assets/menu/Belgian Chocolate Macron.png", tag: "Bestseller", available: true },
-  { id: 2, name: "Red Velvet Cupcake", price: 80, category: "Bakery", desc: "Velvety red sponge with cream cheese frosting", image: "/src/assets/menu/Red Velvet Cupcake.png", tag: "Popular", available: true },
-  { id: 3, name: "Burnt Basque Cheesecake", price: 180, category: "Bakery", desc: "Caramelized crust with creamy custard centre", image: "/src/assets/menu/Burnt Basque Cheesecake.png", tag: "Signature", available: true },
-  { id: 4, name: "Cheese Sev Puri", price: 100, category: "Chaat", desc: "Crispy puri topped with cheese, sev & chutneys", image: "/src/assets/menu/Cheese Sev Puri.png", tag: "Cheesy", available: true },
-  { id: 5, name: "Dahi Ragda Puri", price: 70, category: "Chaat", desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/src/assets/menu/Dahi Ragda Puri.png", tag: "Classic", available: true },
-  { id: 6, name: "Palak Patta Chaat", price: 80, category: "Chaat", desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/src/assets/menu/Palak Patta Chaat.png", tag: "Crispy", available: true },
-  { id: 7, name: "Cheese Pav Bhaji", price: 150, category: "Pav Bhaji", desc: "Buttery pav with spicy bhaji & melted cheese", image: "/src/assets/menu/Cheese Pav Bhaji.png", tag: "Cheesy", available: true },
-  { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, category: "Pav Bhaji", desc: "Rich paneer bhaji with extra cheese pull", image: "/src/assets/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium", available: true },
-  { id: 9, name: "Cheese Masala Pav", price: 120, category: "Pav Bhaji", desc: "Spicy masala pav topped with melted cheese", image: "/src/assets/menu/Cheese Masala Pav.png", tag: "Spicy", available: true },
-  { id: 10, name: "Choco Nutella Shake", price: 120, category: "Shakes", desc: "Hazelnut cocoa shake topped with whipped cream", image: "/src/assets/menu/Choco Nutella Shake.png", tag: "Indulgent", available: true },
-  { id: 11, name: "Mango Shake", price: 150, category: "Shakes", desc: "Fresh alphonso mango thick shake", image: "/src/assets/menu/Mango Shake.png", tag: "Seasonal", available: true },
-  { id: 12, name: "Green Apple Mojito", price: 90, category: "Shakes", desc: "Zesty mint & green apple cooler with soda", image: "/src/assets/menu/Green Apple Mojito.png", tag: "Refreshing", available: true },
-  { id: 13, name: "Paneer Mozzarella Burger", price: 280, category: "Fast Food", desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/src/assets/menu/Paneer Mozzarella Burger.png", tag: "Gourmet", available: true },
-  { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, category: "Fast Food", desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/src/assets/menu/Smoky Barbeque Cottage.png", tag: "Bestseller", available: true },
-  { id: 15, name: "Cheese Loaded Nachos", price: 300, category: "Fast Food", desc: "Crispy nachos with four cheese sauce & salsa", image: "/src/assets/menu/Cheese Loaded Nachos.png", tag: "Loaded", available: true },
-  { id: 16, name: "Nutella Kunafa", price: 220, category: "Desserts", desc: "Crispy kunafa with creamy Nutella filling", image: "/src/assets/menu/Nutella Kunafa.png", tag: "Trending", available: true },
-  { id: 17, name: "Ferrero Brownie", price: 110, category: "Desserts", desc: "Fudgy brownie topped with Ferrero Rocher", image: "/src/assets/menu/Ferrero Brownie.png", tag: "Premium", available: true },
-  { id: 18, name: "Mango Falooda", price: 180, category: "Desserts", desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/src/assets/menu/Mango Falooda.png", tag: "Refreshing", available: true },
-  { id: 19, name: "Pista Kunafa", price: 250, category: "Signatures", desc: "Persian pistachio cream & crushed pistachios", image: "/src/assets/menu/Pista Kunafa.png", tag: "Signature", available: true },
-  { id: 20, name: "Lotus Biscoff Kunafa", price: 220, category: "Signatures", desc: "Caramelised biscuit spread with Lotus crunch", image: "/src/assets/menu/Lotus Biscoff Kunafa.png", tag: "Trending", available: true },
-  { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, category: "Signatures", desc: "Almond filled kataif pastry nest with honey", image: "/src/assets/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan", available: true }
+  { id: 1, name: "Belgian Chocolate Macron", price: 80, category: "Bakery", desc: "Crispy shell with rich Belgian chocolate ganache", image: "/menu/Belgian Chocolate Macron.png", tag: "Bestseller", available: true },
+  { id: 2, name: "Red Velvet Cupcake", price: 80, category: "Bakery", desc: "Velvety red sponge with cream cheese frosting", image: "/menu/Red Velvet Cupcake.png", tag: "Popular", available: true },
+  { id: 3, name: "Burnt Basque Cheesecake", price: 180, category: "Bakery", desc: "Caramelized crust with creamy custard centre", image: "/menu/Burnt Basque Cheesecake.png", tag: "Signature", available: true },
+  { id: 4, name: "Cheese Sev Puri", price: 100, category: "Chaat", desc: "Crispy puri topped with cheese, sev & chutneys", image: "/menu/Cheese Sev Puri.png", tag: "Cheesy", available: true },
+  { id: 5, name: "Dahi Ragda Puri", price: 70, category: "Chaat", desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/menu/Dahi Ragda Puri.png", tag: "Classic", available: true },
+  { id: 6, name: "Palak Patta Chaat", price: 80, category: "Chaat", desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/menu/Palak Patta Chaat.png", tag: "Crispy", available: true },
+  { id: 7, name: "Cheese Pav Bhaji", price: 150, category: "Pav Bhaji", desc: "Buttery pav with spicy bhaji & melted cheese", image: "/menu/Cheese Pav Bhaji.png", tag: "Cheesy", available: true },
+  { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, category: "Pav Bhaji", desc: "Rich paneer bhaji with extra cheese pull", image: "/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium", available: true },
+  { id: 9, name: "Cheese Masala Pav", price: 120, category: "Pav Bhaji", desc: "Spicy masala pav topped with melted cheese", image: "/menu/Cheese Masala Pav.png", tag: "Spicy", available: true },
+  { id: 10, name: "Choco Nutella Shake", price: 120, category: "Shakes", desc: "Hazelnut cocoa shake topped with whipped cream", image: "/menu/Choco Nutella Shake.png", tag: "Indulgent", available: true },
+  { id: 11, name: "Mango Shake", price: 150, category: "Shakes", desc: "Fresh alphonso mango thick shake", image: "/menu/Mango Shake.png", tag: "Seasonal", available: true },
+  { id: 12, name: "Green Apple Mojito", price: 90, category: "Shakes", desc: "Zesty mint & green apple cooler with soda", image: "/menu/Green Apple Mojito.png", tag: "Refreshing", available: true },
+  { id: 13, name: "Paneer Mozzarella Burger", price: 280, category: "Fast Food", desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/menu/Paneer Mozzarella Burger.png", tag: "Gourmet", available: true },
+  { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, category: "Fast Food", desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/menu/Smoky Barbeque Cottage.png", tag: "Bestseller", available: true },
+  { id: 15, name: "Cheese Loaded Nachos", price: 300, category: "Fast Food", desc: "Crispy nachos with four cheese sauce & salsa", image: "/menu/Cheese Loaded Nachos.png", tag: "Loaded", available: true },
+  { id: 16, name: "Nutella Kunafa", price: 220, category: "Desserts", desc: "Crispy kunafa with creamy Nutella filling", image: "/menu/Nutella Kunafa.png", tag: "Trending", available: true },
+  { id: 17, name: "Ferrero Brownie", price: 110, category: "Desserts", desc: "Fudgy brownie topped with Ferrero Rocher", image: "/menu/Ferrero Brownie.png", tag: "Premium", available: true },
+  { id: 18, name: "Mango Falooda", price: 180, category: "Desserts", desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/menu/Mango Falooda.png", tag: "Refreshing", available: true },
+  { id: 19, name: "Pista Kunafa", price: 250, category: "Signatures", desc: "Persian pistachio cream & crushed pistachios", image: "/menu/Pista Kunafa.png", tag: "Signature", available: true },
+  { id: 20, name: "Lotus Biscoff Kunafa", price: 220, category: "Signatures", desc: "Caramelised biscuit spread with Lotus crunch", image: "/menu/Lotus Biscoff Kunafa.png", tag: "Trending", available: true },
+  { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, category: "Signatures", desc: "Almond filled kataif pastry nest with honey", image: "/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan", available: true }
 ];
 
 const CATEGORIES = ["All", "Bakery", "Chaat", "Pav Bhaji", "Shakes", "Fast Food", "Desserts", "Signatures"];

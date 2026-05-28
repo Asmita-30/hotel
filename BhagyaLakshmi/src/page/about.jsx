@@ -426,7 +426,7 @@ export default function About() {
             }}
           >
             <img
-              src="/src/assets/about/VISION.png"
+              src="/about/VISION.png"
               alt="BhagyaLakshmi Store"
               style={{
                 width: "100%",
@@ -479,7 +479,7 @@ export default function About() {
               }}
             >
               <img
-                src="/src/assets/about/VISION.png"
+                src="/about/VISION.png"
                 alt="Our Vision"
                 style={{
                   width: "100%",
@@ -591,7 +591,7 @@ export default function About() {
               }}
             >
               <img
-                src="/src/assets/about/MISSION.png"
+                src="/about/MISSION.png"
                 alt="Our Mission"
                 style={{
                   width: "100%",
