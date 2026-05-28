@@ -253,6 +253,8 @@ function ValueCard({ value, index, inView }) {
 
 // Main About Component
 export default function About() {
+  const [heroImageError, setHeroImageError] = useState(false);
+  const [storyImageError, setStoryImageError] = useState(false);
   const heroRef = useRef(null);
   const storyRef = useRef(null);
   const visionRef = useRef(null);
@@ -291,23 +293,59 @@ export default function About() {
         `}
       </style>
       
-      {/* Hero Section */}
-      <motion.div
+      {/* Hero Section with Background Image */}
+      <div
         ref={heroRef}
         style={{
-          background: "linear-gradient(135deg, #FDF3E0, #F5E8C8)",
-          padding: "4rem 2rem",
-          textAlign: "center",
           position: "relative",
+          width: "100%",
+          minHeight: "500px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: heroImageError ? "linear-gradient(135deg, #FDF3E0, #F5E8C8)" : "none",
           overflow: "hidden",
-          opacity: heroOpacity,
-          scale: heroScale,
         }}
       >
+        {/* Hero Background Image */}
+        {!heroImageError && (
+          <img 
+            src="/menu/about (3).png"
+            alt="About Us Background"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+            onError={() => setHeroImageError(true)}
+          />
+        )}
+        
+        {/* Dark Overlay for text readability */}
+        <div style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "linear-gradient(135deg, rgba(0,0,0,0.5), rgba(0,0,0,0.3))",
+          zIndex: 1,
+        }} />
+        
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={heroInView ? { y: 0, opacity: 1 } : {}}
           transition={{ duration: 0.8 }}
+          style={{
+            position: "relative",
+            zIndex: 2,
+            textAlign: "center",
+            padding: "2rem",
+          }}
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
@@ -320,15 +358,16 @@ export default function About() {
             fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(2.5rem, 8vw, 4rem)",
             fontWeight: 800,
-            color: "#2C1810",
+            color: "#FFFFFF",
             margin: 0,
             letterSpacing: "-0.02em",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
           }}>
-            About <span style={{ color: "#C8A96E" }}>Us</span>
+            About <span style={{ color: "#D4AF37" }}>Us</span>
           </h1>
           <p style={{
             fontSize: 18,
-            color: "#8C7B6B",
+            color: "#F5E8C8",
             maxWidth: 600,
             margin: "1rem auto 0",
             lineHeight: 1.6,
@@ -336,11 +375,7 @@ export default function About() {
             Discover the story behind BhagyaLakshmi Snacks Corner
           </p>
         </motion.div>
-        
-        {/* Decorative Elements */}
-        <div style={{ position: "absolute", top: -100, right: -100, width: 300, height: 300, background: "rgba(200,169,110,0.05)", borderRadius: "50%" }} />
-        <div style={{ position: "absolute", bottom: -100, left: -100, width: 250, height: 250, background: "rgba(200,169,110,0.08)", borderRadius: "50%" }} />
-      </motion.div>
+      </div>
       
       {/* Stats Section */}
       <div ref={statsRef} style={{ maxWidth: 1200, margin: "0 auto", padding: "4rem 2rem" }}>
@@ -355,7 +390,7 @@ export default function About() {
         </div>
       </div>
       
-      {/* Story Section - Left Text, Right Image */}
+      {/* Story Section - Left Text, Right Image (NO OVERLAY) */}
       <div ref={storyRef} style={{ maxWidth: 1200, margin: "0 auto", padding: "2rem", overflow: "hidden" }}>
         <div style={{
           display: "grid",
@@ -425,34 +460,30 @@ export default function About() {
               boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
             }}
           >
-            <img
-              src="/about/VISION.png"
-              alt="BhagyaLakshmi Store"
-              style={{
-                width: "100%",
-                height: "auto",
-                display: "block",
-              }}
-              onError={(e) => {
-                e.target.style.display = "none";
-                e.target.parentElement.style.background = "linear-gradient(135deg, #F5E8C8, #E8D5A8)";
-                e.target.parentElement.style.minHeight = "400px";
-                e.target.parentElement.style.display = "flex";
-                e.target.parentElement.style.alignItems = "center";
-                e.target.parentElement.style.justifyContent = "center";
-                e.target.parentElement.innerHTML = '<div style="text-align:center"><span style="font-size:64px">🏪</span><p style="color:#8C7B6B;margin-top:16px">Our Store Image</p></div>';
-              }}
-            />
-            <motion.div
-              animate={{ opacity: [0, 0.5, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              style={{
-                position: "absolute",
-                inset: 0,
-                background: "radial-gradient(circle, transparent 30%, rgba(200,169,110,0.1) 100%)",
-                pointerEvents: "none",
-              }}
-            />
+            {!storyImageError ? (
+              <img
+                src="/menu/bhagylashki.png"
+                alt="BhagyaLakshmi Store"
+                style={{
+                  width: "100%",
+                  height: "auto",
+                  display: "block",
+                }}
+                onError={() => setStoryImageError(true)}
+              />
+            ) : (
+              <div style={{
+                background: "linear-gradient(135deg, #F5E8C8, #E8D5A8)",
+                minHeight: "400px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+              }}>
+                <span style={{ fontSize: 64 }}>🏪</span>
+                <p style={{ color: "#8C7B6B", marginTop: 16 }}>Our Store Image</p>
+              </div>
+            )}
           </motion.div>
         </div>
       </div>

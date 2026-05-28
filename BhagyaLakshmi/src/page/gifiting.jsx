@@ -513,6 +513,7 @@ export default function Gifting() {
   const [openFAQ, setOpenFAQ] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
@@ -539,22 +540,61 @@ export default function Gifting() {
         ::-webkit-scrollbar-thumb { background: #C8A96E; border-radius: 10px; }
       `}</style>
       
-      {/* Hero Section */}
-      <motion.div
+      {/* Hero Section with Background Image */}
+      <div
         ref={heroRef}
         style={{
-          background: "linear-gradient(135deg, #FDF3E0, #F5E8C8)",
-          textAlign: "center",
-          padding: "4rem 2rem",
           position: "relative",
+          width: "100%",
+          minHeight: "550px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: imageError ? "linear-gradient(135deg, #FDF3E0, #F5E8C8)" : "none",
           overflow: "hidden",
-          opacity: opacity,
         }}
       >
+        {/* Background Image - CORRECTED PATH: gifiting.png */}
+        {!imageError && (
+          <img 
+            src="/menu/gifiting.png"
+            alt="Gifting Background"
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+              zIndex: 0,
+            }}
+            onError={() => setImageError(true)}
+          />
+        )}
+        
+        {/* Dark Overlay for text readability */}
+        <div style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "linear-gradient(135deg, rgba(0,0,0,0.6), rgba(0,0,0,0.4))",
+          zIndex: 1,
+        }} />
+        
         <motion.div
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.8 }}
+          style={{ 
+            position: "relative", 
+            zIndex: 2,
+            textAlign: "center",
+            padding: "2rem",
+            maxWidth: "800px",
+            margin: "0 auto",
+          }}
         >
           <motion.div
             animate={{ rotate: [0, 10, -10, 0], scale: [1, 1.1, 1] }}
@@ -567,15 +607,16 @@ export default function Gifting() {
             fontFamily: "'Playfair Display', serif",
             fontSize: "clamp(2.5rem, 8vw, 4.5rem)",
             fontWeight: 800,
-            color: "#2C1810",
+            color: "#FFFFFF",
             margin: 0,
             letterSpacing: "-0.02em",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.3)",
           }}>
-            Thoughtful <span style={{ color: "#C8A96E" }}>Gifting</span>
+            Thoughtful <span style={{ color: "#D4AF37" }}>Gifting</span>
           </h1>
           <p style={{
             fontSize: 18,
-            color: "#8C7B6B",
+            color: "#F5E8C8",
             maxWidth: 650,
             margin: "1rem auto 0",
             lineHeight: 1.6,
@@ -595,26 +636,23 @@ export default function Gifting() {
               whileTap={{ scale: 0.95 }}
               onClick={() => categoriesRef.current?.scrollIntoView({ behavior: "smooth" })}
               style={{
-                background: "#2C1810",
-                color: "#F5E8C8",
+                background: "#D4AF37",
+                color: "#2C1810",
                 border: "none",
                 borderRadius: 50,
                 padding: "14px 36px",
                 fontSize: 16,
-                fontWeight: 600,
+                fontWeight: 700,
                 cursor: "pointer",
                 fontFamily: "'DM Sans', sans-serif",
+                boxShadow: "0 4px 15px rgba(0,0,0,0.2)",
               }}
             >
               Explore Collections →
             </motion.button>
           </motion.div>
         </motion.div>
-        
-        {/* Decorative elements */}
-        <div style={{ position: "absolute", bottom: -50, left: -50, width: 200, height: 200, background: "rgba(200,169,110,0.08)", borderRadius: "50%" }} />
-        <div style={{ position: "absolute", top: -50, right: -50, width: 250, height: 250, background: "rgba(200,169,110,0.05)", borderRadius: "50%" }} />
-      </motion.div>
+      </div>
       
       {/* Categories Grid */}
       <div ref={categoriesRef} style={{ maxWidth: 1400, margin: "0 auto", padding: "4rem 2rem" }}>

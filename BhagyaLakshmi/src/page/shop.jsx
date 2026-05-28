@@ -1,85 +1,41 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence, useInView } from "framer-motion";
 
-// Menu Sections with their items and image paths
-const MENU_SECTIONS = [
-  {
-    id: "bakery",
-    title: "BAKERY SPECIALS",
-    emoji: "🥐",
-    bgGradient: "linear-gradient(135deg, #FFF5E6, #FFE8D4)",
-    items: [
-      { id: 1, name: "Belgian Chocolate Macron", price: 80, desc: "Crispy shell with rich Belgian chocolate ganache", image: "/menu/Belgian Chocolate Macron.png", tag: "Bestseller" },
-      { id: 2, name: "Red Velvet Cupcake", price: 80, desc: "Velvety red sponge with cream cheese frosting", image: "/menu/Red Velvet Cupcake.png", tag: "Popular" },
-      { id: 3, name: "Burnt Basque Cheesecake", price: 180, desc: "Caramelized crust with creamy custard centre", image: "/menu/Burnt Basque Cheesecake.png", tag: "Signature" }
-    ]
-  },
-  {
-    id: "chaat",
-    title: "CHAAT CORNER",
-    emoji: "🌶️",
-    bgGradient: "linear-gradient(135deg, #FFF0E0, #FFE4CC)",
-    items: [
-      { id: 4, name: "Cheese Sev Puri", price: 100, desc: "Crispy puri topped with cheese, sev & chutneys", image: "/menu/Cheese Sev Puri.png", tag: "Loaded" },
-      { id: 5, name: "Dahi Ragda Puri", price: 70, desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/menu/Dahi Ragda Puri.png", tag: "Classic" },
-      { id: 6, name: "Palak Patta Chaat", price: 80, desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/menu/Palak Patta Chaat.png", tag: "Crispy" }
-    ]
-  },
-  {
-    id: "pavbhaji",
-    title: "PAV BHAJI & PULAV",
-    emoji: "🫕",
-    bgGradient: "linear-gradient(135deg, #FFF2E3, #FFE6D0)",
-    items: [
-      { id: 7, name: "Cheese Pav Bhaji", price: 150, desc: "Buttery pav with spicy bhaji & melted cheese", image: "/menu/Cheese Pav Bhaji.png", tag: "Cheesy" },
-      { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, desc: "Rich paneer bhaji with extra cheese pull", image: "/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium" },
-      { id: 9, name: "Cheese Masala Pav", price: 120, desc: "Spicy masala pav topped with melted cheese", image: "/menu/Cheese Masala Pav.png", tag: "Spicy" }
-    ]
-  },
-  {
-    id: "shakes",
-    title: "SHAKES & COOLERS",
-    emoji: "🥤",
-    bgGradient: "linear-gradient(135deg, #E8F4F8, #DDEFF5)",
-    items: [
-      { id: 10, name: "Choco Nutella Shake", price: 120, desc: "Hazelnut cocoa shake topped with whipped cream", image: "/menu/Choco Nutella Shake.png", tag: "Indulgent" },
-      { id: 11, name: "Mango Shake", price: 150, desc: "Fresh alphonso mango thick shake", image: "/menu/Mango Shake.png", tag: "Seasonal" },
-      { id: 12, name: "Green Apple Mojito", price: 90, desc: "Zesty mint & green apple cooler with soda", image: "/menu/Green Apple Mojito.png", tag: "Refreshing" }
-    ]
-  },
-  {
-    id: "fastfood",
-    title: "CAFÉ FAST FOOD",
-    emoji: "🍔",
-    bgGradient: "linear-gradient(135deg, #FFF0E8, #FFE6DA)",
-    items: [
-      { id: 13, name: "Paneer Mozzarella Burger", price: 280, desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/menu/Paneer Mozzarella Burger.png", tag: "Gourmet" },
-      { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/menu/Smoky Barbeque Cottage.png", tag: "Bestseller" },
-      { id: 15, name: "Cheese Loaded Nachos", price: 300, desc: "Crispy nachos with four cheese sauce & salsa", image: "/menu/Cheese Loaded Nachos.png", tag: "Loaded" }
-    ]
-  },
-  {
-    id: "desserts",
-    title: "DESSERTS & SWEETS",
-    emoji: "🍨",
-    bgGradient: "linear-gradient(135deg, #FFF0F0, #FFE4E4)",
-    items: [
-      { id: 16, name: "Nutella Kunafa", price: 220, desc: "Crispy kunafa with creamy Nutella filling", image: "/menu/Nutella Kunafa.png", tag: "Trending" },
-      { id: 17, name: "Ferrero Brownie", price: 110, desc: "Fudgy brownie topped with Ferrero Rocher", image: "/menu/Ferrero Brownie.png", tag: "Premium" },
-      { id: 18, name: "Mango Falooda", price: 180, desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/menu/Mango Falooda.png", tag: "Refreshing" }
-    ]
-  },
-  {
-    id: "signatures",
-    title: "PREMIUM SIGNATURES",
-    emoji: "👑",
-    bgGradient: "linear-gradient(135deg, #F5EDE0, #EDE0CC)",
-    items: [
-      { id: 19, name: "Pista Kunafa", price: 250, desc: "Persian pistachio cream & crushed pistachios", image: "/menu/Pista Kunafa.png", tag: "Signature" },
-      { id: 20, name: "Lotus Biscoff Kunafa", price: 220, desc: "Caramelised biscuit spread with Lotus crunch", image: "/menu/Lotus Biscoff Kunafa.png", tag: "Trending" },
-      { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, desc: "Almond filled kataif pastry nest with honey", image: "/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan" }
-    ]
-  }
+// Menu Items Data (Flattened for filtering)
+const ALL_MENU_ITEMS = [
+  { id: 1, name: "Belgian Chocolate Macron", price: 80, desc: "Crispy shell with rich Belgian chocolate ganache", image: "/menu/Belgian Chocolate Macron.png", tag: "Bestseller", category: "bakery", categoryName: "BAKERY", emoji: "🥐" },
+  { id: 2, name: "Red Velvet Cupcake", price: 80, desc: "Velvety red sponge with cream cheese frosting", image: "/menu/Red Velvet Cupcake.png", tag: "Popular", category: "bakery", categoryName: "BAKERY", emoji: "🥐" },
+  { id: 3, name: "Burnt Basque Cheesecake", price: 180, desc: "Caramelized crust with creamy custard centre", image: "/menu/Burnt Basque Cheesecake.png", tag: "Signature", category: "bakery", categoryName: "BAKERY", emoji: "🥐" },
+  { id: 4, name: "Cheese Sev Puri", price: 100, desc: "Crispy puri topped with cheese, sev & chutneys", image: "/menu/Cheese Sev Puri.png", tag: "Loaded", category: "chaat", categoryName: "CHAAT", emoji: "🌶️" },
+  { id: 5, name: "Dahi Ragda Puri", price: 70, desc: "Yoghurt, ragda & sweet chutney on crispy puri", image: "/menu/Dahi Ragda Puri.png", tag: "Classic", category: "chaat", categoryName: "CHAAT", emoji: "🌶️" },
+  { id: 6, name: "Palak Patta Chaat", price: 80, desc: "Crispy spinach leaves with yoghurt & tamarind", image: "/menu/Palak Patta Chaat.png", tag: "Crispy", category: "chaat", categoryName: "CHAAT", emoji: "🌶️" },
+  { id: 7, name: "Cheese Pav Bhaji", price: 150, desc: "Buttery pav with spicy bhaji & melted cheese", image: "/menu/Cheese Pav Bhaji.png", tag: "Cheesy", category: "pavbhaji", categoryName: "PAV", emoji: "🫕" },
+  { id: 8, name: "Paneer Cheese Pav Bhaji", price: 220, desc: "Rich paneer bhaji with extra cheese pull", image: "/menu/Paneer Cheese Pav Bhaji.png", tag: "Premium", category: "pavbhaji", categoryName: "PAV", emoji: "🫕" },
+  { id: 9, name: "Cheese Masala Pav", price: 120, desc: "Spicy masala pav topped with melted cheese", image: "/menu/Cheese Masala Pav.png", tag: "Spicy", category: "pavbhaji", categoryName: "PAV", emoji: "🫕" },
+  { id: 10, name: "Choco Nutella Shake", price: 120, desc: "Hazelnut cocoa shake topped with whipped cream", image: "/menu/Choco Nutella Shake.png", tag: "Indulgent", category: "shakes", categoryName: "SHAKES", emoji: "🥤" },
+  { id: 11, name: "Mango Shake", price: 150, desc: "Fresh alphonso mango thick shake", image: "/menu/Mango Shake.png", tag: "Seasonal", category: "shakes", categoryName: "SHAKES", emoji: "🥤" },
+  { id: 12, name: "Green Apple Mojito", price: 90, desc: "Zesty mint & green apple cooler with soda", image: "/menu/Green Apple Mojito.png", tag: "Refreshing", category: "shakes", categoryName: "SHAKES", emoji: "🥤" },
+  { id: 13, name: "Paneer Mozzarella Burger", price: 280, desc: "Grilled paneer patty with mozzarella & herb mayo", image: "/menu/Paneer Mozzarella Burger.png", tag: "Gourmet", category: "fastfood", categoryName: "CAFÉ", emoji: "🍔" },
+  { id: 14, name: "Smoky Barbeque Cottage Cheese Pizza", price: 320, desc: "BBQ sauce, cottage cheese, bell peppers & onions", image: "/menu/Smoky Barbeque Cottage.png", tag: "Bestseller", category: "fastfood", categoryName: "CAFÉ", emoji: "🍔" },
+  { id: 15, name: "Cheese Loaded Nachos", price: 300, desc: "Crispy nachos with four cheese sauce & salsa", image: "/menu/Cheese Loaded Nachos.png", tag: "Loaded", category: "fastfood", categoryName: "CAFÉ", emoji: "🍔" },
+  { id: 16, name: "Nutella Kunafa", price: 220, desc: "Crispy kunafa with creamy Nutella filling", image: "/menu/Nutella Kunafa.png", tag: "Trending", category: "desserts", categoryName: "DESSERTS", emoji: "🍨" },
+  { id: 17, name: "Ferrero Brownie", price: 110, desc: "Fudgy brownie topped with Ferrero Rocher", image: "/menu/Ferrero Brownie.png", tag: "Premium", category: "desserts", categoryName: "DESSERTS", emoji: "🍨" },
+  { id: 18, name: "Mango Falooda", price: 180, desc: "Mango jelly, vermicelli, basil seeds & ice cream", image: "/menu/Mango Falooda.png", tag: "Refreshing", category: "desserts", categoryName: "DESSERTS", emoji: "🍨" },
+  { id: 19, name: "Pista Kunafa", price: 250, desc: "Persian pistachio cream & crushed pistachios", image: "/menu/Pista Kunafa.png", tag: "Signature", category: "signatures", categoryName: "PREMIUM", emoji: "👑" },
+  { id: 20, name: "Lotus Biscoff Kunafa", price: 220, desc: "Caramelised biscuit spread with Lotus crunch", image: "/menu/Lotus Biscoff Kunafa.png", tag: "Trending", category: "signatures", categoryName: "PREMIUM", emoji: "👑" },
+  { id: 21, name: "Almond Nest Kataif Kunafa", price: 200, desc: "Almond filled kataif pastry nest with honey", image: "/menu/Almond Nest Kataif Kunafa.png", tag: "Artisan", category: "signatures", categoryName: "PREMIUM", emoji: "👑" }
+];
+
+// Category Filters
+const CATEGORY_FILTERS = [
+  { id: "all", label: "ALL", icon: "🍽️", name: "All Categories" },
+  { id: "bakery", label: "BAKERY", icon: "🥐", name: "Bakery" },
+  { id: "chaat", label: "CHAAT", icon: "🌶️", name: "Chaat" },
+  { id: "pavbhaji", label: "PAV", icon: "🫕", name: "Pav Bhaji" },
+  { id: "shakes", label: "SHAKES", icon: "🥤", name: "Shakes" },
+  { id: "fastfood", label: "CAFÉ", icon: "🍔", name: "Café Fast Food" },
+  { id: "desserts", label: "DESSERTS", icon: "🍨", name: "Desserts" },
+  { id: "signatures", label: "PREMIUM", icon: "👑", name: "Premium Signatures" }
 ];
 
 // Tag color mapping
@@ -261,37 +217,6 @@ function ProductCard({ item, index, onAdd, cart }) {
   );
 }
 
-// Section Header Component - Centered
-function SectionHeader({ title, emoji, bgGradient, index, inView }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ delay: index * 0.1, duration: 0.5 }}
-      style={{
-        background: bgGradient,
-        borderRadius: 40,
-        padding: "0.8rem 1.5rem",
-        marginBottom: "1.5rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 12,
-      }}
-    >
-      <span style={{ fontSize: 28 }}>{emoji}</span>
-      <h2 style={{
-        fontFamily: "'Playfair Display', serif",
-        fontSize: "clamp(1.2rem, 4vw, 1.5rem)",
-        fontWeight: 700,
-        color: "#2C1810",
-        margin: 0,
-      }}>{title}</h2>
-      <span style={{ fontSize: 28 }}>{emoji}</span>
-    </motion.div>
-  );
-}
-
 // Cart Component
 function Cart({ cart, onRemove, onClose, onCheckout }) {
   const total = cart.reduce((s, i) => s + i.price * i.qty, 0);
@@ -386,6 +311,20 @@ export default function Shop() {
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [orderPlaced, setOrderPlaced] = useState(false);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [hoveredFilter, setHoveredFilter] = useState(null);
+
+  // Load cart from localStorage
+  useEffect(() => {
+    const savedCart = localStorage.getItem("shopCart");
+    if (savedCart) setCart(JSON.parse(savedCart));
+  }, []);
+
+  // Save cart to localStorage
+  useEffect(() => {
+    localStorage.setItem("shopCart", JSON.stringify(cart));
+    window.dispatchEvent(new Event("cartUpdated"));
+  }, [cart]);
 
   const addToCart = (item) => {
     setCart(prev => {
@@ -412,17 +351,15 @@ export default function Shop() {
     setTimeout(() => {
       setCart([]);
       setOrderPlaced(false);
+      localStorage.removeItem("shopCart");
+      window.dispatchEvent(new Event("cartUpdated"));
     }, 2500);
   };
 
-  const scrollToSection = (sectionId) => {
-    const element = document.getElementById(sectionId);
-    if (element) {
-      const offset = 70;
-      const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-      window.scrollTo({ top: elementPosition - offset, behavior: "smooth" });
-    }
-  };
+  // Filter items based on active category
+  const filteredItems = activeCategory === "all" 
+    ? ALL_MENU_ITEMS 
+    : ALL_MENU_ITEMS.filter(item => item.category === activeCategory);
 
   return (
     <div style={{
@@ -432,6 +369,7 @@ export default function Shop() {
       width: "100%",
       margin: 0,
       padding: 0,
+      paddingTop: "68px",
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:wght@400;500;600;700&display=swap');
@@ -442,49 +380,7 @@ export default function Shop() {
         body { margin: 0; padding: 0; background: #FBF6EE; }
       `}</style>
 
-      {/* Category Navigation Bar */}
-      <div style={{
-        position: "sticky",
-        top: "68px",
-        left: 0,
-        right: 0,
-        zIndex: 99,
-        background: "#FBF6EE",
-        borderBottom: "1px solid #F0E8D6",
-        padding: "0.5rem 1rem",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: "0.5rem",
-        flexWrap: "wrap",
-        overflowX: "auto",
-      }}>
-        {MENU_SECTIONS.map(section => (
-          <button
-            key={section.id}
-            onClick={() => scrollToSection(section.id)}
-            style={{
-              background: "transparent",
-              border: "none",
-              fontSize: 11,
-              fontWeight: 600,
-              color: "#8C7B6B",
-              cursor: "pointer",
-              padding: "6px 14px",
-              borderRadius: 25,
-              whiteSpace: "nowrap",
-              fontFamily: "'DM Sans', sans-serif",
-              transition: "all 0.2s",
-            }}
-            onMouseEnter={(e) => e.target.style.background = "#F0E8D6"}
-            onMouseLeave={(e) => e.target.style.background = "transparent"}
-          >
-            {section.emoji} {section.title.split(" ")[0]}
-          </button>
-        ))}
-      </div>
-
-      {/* Hero Section - Directly below header */}
+      {/* Hero Section */}
       <div style={{
         background: "linear-gradient(135deg, #FDF3E0, #F5E8C8)",
         textAlign: "center",
@@ -510,116 +406,146 @@ export default function Shop() {
         </p>
       </div>
 
-      {/* Floating Cart Button */}
-      <button
-        onClick={() => setCartOpen(true)}
-        style={{
-          position: "fixed",
-          top: "80px",
-          right: "15px",
-          zIndex: 98,
-          background: "#2C1810",
-          color: "#F5E8C8",
-          border: "1px solid #C8A96E",
-          borderRadius: 40,
-          padding: "8px 16px",
-          fontSize: 12,
-          fontWeight: 700,
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          boxShadow: "0 2px 10px rgba(0,0,0,0.1)",
-        }}
-      >
-        🛒 Cart
-        {totalItems > 0 && (
-          <span style={{
-            background: "#C8A96E",
-            color: "#2C1810",
-            borderRadius: 50,
-            width: 20,
-            height: 20,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 10,
-            fontWeight: 800,
-          }}>
-            {totalItems}
-          </span>
-        )}
-      </button>
-
-      {/* Menu Sections */}
-      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "1.5rem 1.5rem 2rem" }}>
-        {MENU_SECTIONS.map((section, idx) => {
-          const SectionObserver = () => {
-            const ref = useRef(null);
-            const isInView = useInView(ref, { once: true, amount: 0.15 });
-            return (
-              <div ref={ref} id={section.id} style={{ marginBottom: "2.5rem" }}>
-                <SectionHeader 
-                  title={section.title} 
-                  emoji={section.emoji} 
-                  bgGradient={section.bgGradient}
-                  index={idx}
-                  inView={isInView}
-                />
-                <div style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(auto-fill, minmax(250px, 1fr))",
-                  gap: "1.25rem",
-                }}>
-                  {section.items.map((item, itemIdx) => (
-                    <ProductCard
-                      key={item.id}
-                      item={item}
-                      index={itemIdx}
-                      onAdd={addToCart}
-                      cart={cart}
-                    />
-                  ))}
-                </div>
-              </div>
-            );
-          };
-          return <SectionObserver key={section.id} />;
-        })}
-      </div>
-
-      {/* Floating Cart Summary */}
-      {cart.length > 0 && !cartOpen && (
-        <div style={{
-          position: "fixed",
-          bottom: 20,
-          left: "50%",
-          transform: "translateX(-50%)",
-          zIndex: 90,
-        }}>
-          <button
-            onClick={() => setCartOpen(true)}
+      {/* Category Filter Bar */}
+      <div style={{
+        position: "sticky",
+        top: "68px",
+        left: 0,
+        right: 0,
+        zIndex: 99,
+        background: "#FBF6EE",
+        borderBottom: "1px solid #F0E8D6",
+        padding: "0.8rem 1rem",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "0.6rem",
+        flexWrap: "wrap",
+        overflowX: "auto",
+      }}>
+        {CATEGORY_FILTERS.map((filter) => (
+          <motion.button
+            key={filter.id}
+            onClick={() => setActiveCategory(filter.id)}
+            onMouseEnter={() => setHoveredFilter(filter.id)}
+            onMouseLeave={() => setHoveredFilter(null)}
+            whileTap={{ scale: 0.95 }}
             style={{
-              background: "#2C1810",
-              border: "1px solid #C8A96E",
-              borderRadius: 40,
-              padding: "8px 20px",
-              color: "#F5E8C8",
+              background: activeCategory === filter.id 
+                ? "linear-gradient(135deg, #C8A96E, #B8942E)" 
+                : "transparent",
+              border: activeCategory === filter.id 
+                ? "none" 
+                : "1px solid rgba(200, 169, 110, 0.3)",
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 600,
+              color: activeCategory === filter.id ? "#2C1810" : "#8C7B6B",
               cursor: "pointer",
+              padding: "8px 18px",
+              borderRadius: 35,
+              whiteSpace: "nowrap",
+              fontFamily: "'DM Sans', sans-serif",
+              transition: "all 0.2s",
               display: "flex",
               alignItems: "center",
-              gap: 10,
-              boxShadow: "0 4px 15px rgba(0,0,0,0.1)",
+              gap: 8,
             }}
           >
-            <span>🛒 {totalItems} items</span>
-            <span style={{ width: 1, height: 14, background: "#C8A96E" }} />
-            <span>₹{totalPrice}</span>
-            <span>→</span>
-          </button>
-        </div>
+            <span style={{ fontSize: 16 }}>{filter.icon}</span>
+            <span>{filter.label}</span>
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Results Count */}
+      <div style={{
+        maxWidth: 1300,
+        margin: "0 auto",
+        padding: "1rem 1.5rem 0",
+      }}>
+        <p style={{
+          fontSize: 12,
+          color: "#8C7B6B",
+          fontFamily: "'DM Sans', sans-serif",
+        }}>
+          Showing {filteredItems.length} items
+        </p>
+      </div>
+
+      {/* Menu Items Grid */}
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "1.5rem 1.5rem 2rem" }}>
+        <AnimatePresence mode="popLayout">
+          {filteredItems.length === 0 ? (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              style={{
+                textAlign: "center",
+                padding: "3rem",
+                background: "#FFFFFF",
+                borderRadius: 20,
+              }}
+            >
+              <div style={{ fontSize: 48, marginBottom: 12 }}>🍽️</div>
+              <h3 style={{ color: "#2C1810", fontSize: 18 }}>No items found</h3>
+              <p style={{ color: "#8C7B6B", fontSize: 13 }}>Try selecting a different category</p>
+            </motion.div>
+          ) : (
+            <motion.div
+              layout
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
+                gap: "1.5rem",
+              }}
+            >
+              {filteredItems.map((item, idx) => (
+                <ProductCard
+                  key={item.id}
+                  item={item}
+                  index={idx}
+                  onAdd={addToCart}
+                  cart={cart}
+                />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Floating Cart Button */}
+      {totalItems > 0 && !cartOpen && (
+        <motion.button
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0, opacity: 0 }}
+          onClick={() => setCartOpen(true)}
+          style={{
+            position: "fixed",
+            bottom: 20,
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: 90,
+            background: "#2C1810",
+            border: "1px solid #C8A96E",
+            borderRadius: 50,
+            padding: "10px 24px",
+            color: "#F5E8C8",
+            fontSize: 13,
+            fontWeight: 700,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+          }}
+        >
+          <span>🛒 {totalItems} items</span>
+          <span style={{ width: 1, height: 16, background: "#C8A96E" }} />
+          <span>₹{totalPrice}</span>
+          <span>→</span>
+        </motion.button>
       )}
 
       {/* Cart Sidebar */}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Menu Items Data
 const MENU_ITEMS = [
@@ -161,7 +161,7 @@ function CartSidebar({ cart, onUpdateQuantity, onClose, onCheckout }) {
   );
 }
 
-// Checkout Modal - Complete with Order Summary
+// Checkout Modal - Properly Centered
 function CheckoutModal({ isOpen, onClose, cart, onSubmit }) {
   const [formData, setFormData] = useState({
     name: "",
@@ -174,170 +174,462 @@ function CheckoutModal({ isOpen, onClose, cart, onSubmit }) {
     notes: ""
   });
   const [isProcessing, setIsProcessing] = useState(false);
-  
+
   const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const deliveryFee = subtotal > 500 ? 0 : 40;
   const packagingFee = 10;
   const total = subtotal + deliveryFee + packagingFee;
-  
+
+  const inputStyle = {
+    width: "100%",
+    padding: "11px 14px",
+    border: "1px solid #ddd",
+    borderRadius: 10,
+    fontSize: 13,
+    outline: "none",
+    background: "#FFFFFF",
+    color: "#2C1810",
+    fontFamily: "'DM Sans', sans-serif"
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontSize: 13,
+    fontWeight: 600,
+    color: "#2C1810",
+    marginBottom: 5,
+    background: "transparent"
+  };
+
+  const rowStyle = {
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    gap: 12,
+    marginBottom: 7,
+    fontSize: 13,
+    background: "transparent"
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (!formData.name || !formData.phone || !formData.address || !formData.city || !formData.pincode) {
       alert("Please fill all required fields!");
       return;
     }
+
     setIsProcessing(true);
+
     setTimeout(() => {
       setIsProcessing(false);
-      onSubmit({ 
-        ...formData, 
-        items: cart, 
-        subtotal: subtotal,
-        deliveryFee: deliveryFee,
-        packagingFee: packagingFee,
-        total: total, 
+      onSubmit({
+        ...formData,
+        items: cart,
+        subtotal,
+        deliveryFee,
+        packagingFee,
+        total,
         orderId: "BL" + Math.floor(Math.random() * 1000000),
         orderDate: new Date().toLocaleString()
       });
-      setFormData({ name: "", phone: "", address: "", city: "", pincode: "", landmark: "", paymentMethod: "cod", notes: "" });
-    }, 2000);
+
+      setFormData({
+        name: "",
+        phone: "",
+        address: "",
+        city: "",
+        pincode: "",
+        landmark: "",
+        paymentMethod: "cod",
+        notes: ""
+      });
+    }, 1200);
   };
-  
+
   if (!isOpen) return null;
-  
+
   return (
-    <AnimatePresence>
-      {isOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={onClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(44,24,16,0.6)", backdropFilter: "blur(4px)", zIndex: 1000 }}
-          />
-          <motion.div
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "95%", maxWidth: 550, height: "auto", maxHeight: "85vh", background: "#FFFFFF", borderRadius: 28, zIndex: 1001, boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)", display: "flex", flexDirection: "column", overflow: "hidden" }}
-          >
-            {/* Modal Header */}
-            <div style={{ padding: "1rem 1.25rem", background: "linear-gradient(135deg, #C8A96E, #B8942E)", color: "#FFFFFF", flexShrink: 0 }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <span style={{ fontSize: 22 }}>📝</span>
-                  <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700 }}>Complete Your Order</h2>
+    <>
+      <style>{`
+        * {
+          box-sizing: border-box;
+        }
+
+        .checkout-modal {
+          font-family: 'DM Sans', sans-serif;
+        }
+
+        .checkout-modal input,
+        .checkout-modal textarea {
+          background: #FFFFFF !important;
+          color: #2C1810;
+        }
+
+        .checkout-modal label {
+          background: transparent !important;
+        }
+
+        .order-summary-box * {
+          background: transparent !important;
+        }
+
+        .checkout-modal input:focus,
+        .checkout-modal textarea:focus {
+          border-color: #C8A96E !important;
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(200, 169, 110, 0.15);
+        }
+
+        .checkout-modal::-webkit-scrollbar {
+          width: 5px;
+        }
+
+        .checkout-modal::-webkit-scrollbar-thumb {
+          background: #C8A96E;
+          border-radius: 10px;
+        }
+      `}</style>
+
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              style={{
+                position: "fixed",
+                inset: 0,
+                background: "rgba(44,24,16,0.55)",
+                backdropFilter: "blur(3px)",
+                zIndex: 1000
+              }}
+            />
+
+            <motion.div
+              className="checkout-modal"
+              initial={{
+                scale: 0.9,
+                opacity: 0,
+                x: "-50%",
+                y: "-45%"
+              }}
+              animate={{
+                scale: 1,
+                opacity: 1,
+                x: "-50%",
+                y: "-50%"
+              }}
+              exit={{
+                scale: 0.9,
+                opacity: 0,
+                x: "-50%",
+                y: "-45%"
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 300,
+                damping: 30
+              }}
+              style={{
+                position: "fixed",
+                top: "50%",
+                left: "50%",
+                width: "92%",
+                maxWidth: 650,
+                height: "85vh",
+                maxHeight: "85vh",
+                background: "#FFFFFF",
+                borderRadius: 28,
+                zIndex: 1001,
+                boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)",
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden"
+              }}
+            >
+              <div
+                style={{
+                  padding: "1rem 1.25rem",
+                  background: "linear-gradient(135deg, #C8A96E, #B8942E)",
+                  color: "#FFFFFF",
+                  flexShrink: 0
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <span style={{ fontSize: 22 }}>📝</span>
+                    <h2 style={{ margin: 0, fontSize: 19, fontWeight: 700, color: "#FFFFFF" }}>
+                      Complete Your Order
+                    </h2>
+                  </div>
+
+                  <motion.button
+                    whileHover={{ scale: 1.1, rotate: 90 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={onClose}
+                    type="button"
+                    style={{
+                      background: "rgba(255,255,255,0.2)",
+                      border: "none",
+                      borderRadius: 50,
+                      width: 34,
+                      height: 34,
+                      cursor: "pointer",
+                      fontSize: 17,
+                      color: "#FFFFFF",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center"
+                    }}
+                  >
+                    ✕
+                  </motion.button>
                 </div>
-                <motion.button whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }} onClick={onClose} style={{ background: "rgba(255,255,255,0.2)", border: "none", borderRadius: 50, width: 32, height: 32, cursor: "pointer", fontSize: 16, color: "#FFFFFF", display: "flex", alignItems: "center", justifyContent: "center" }}>✕</motion.button>
+
+                <p style={{ fontSize: 12, margin: "6px 0 0 0", opacity: 0.9, color: "#FFFFFF" }}>
+                  Please fill in your details to place order
+                </p>
               </div>
-              <p style={{ fontSize: 11, margin: "6px 0 0 0", opacity: 0.8 }}>Please fill in your details to place order</p>
-            </div>
-            
-            {/* Modal Body */}
-            <div style={{ flex: 1, overflowY: "auto", padding: "1.25rem" }}>
-              <form onSubmit={handleSubmit}>
-                {/* Order Items Summary */}
-                <div style={{ background: "#FBF6EE", borderRadius: 16, padding: "12px 15px", marginBottom: 20 }}>
-                  <h4 style={{ margin: "0 0 10px 0", fontSize: 14, fontWeight: 700, color: "#2C1810" }}>🍽️ Your Order Items</h4>
-                  {cart.map((item, idx) => (
-                    <div key={idx} style={{ display: "flex", justifyContent: "space-between", marginBottom: 6, fontSize: 12 }}>
-                      <span>{item.name} x {item.quantity}</span>
-                      <span style={{ fontWeight: 600 }}>₹{item.price * item.quantity}</span>
-                    </div>
-                  ))}
-                  <div style={{ borderTop: "1px dashed #E0D5C0", marginTop: 8, paddingTop: 8 }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, color: "#8C7B6B" }}>Subtotal</span>
-                      <span style={{ fontSize: 12 }}>₹{subtotal}</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, color: "#8C7B6B" }}>Delivery Fee</span>
-                      <span style={{ fontSize: 12 }}>{deliveryFee === 0 ? "Free" : `₹${deliveryFee}`}</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
-                      <span style={{ fontSize: 12, color: "#8C7B6B" }}>Packaging Fee</span>
-                      <span style={{ fontSize: 12 }}>₹{packagingFee}</span>
-                    </div>
-                    <div style={{ display: "flex", justifyContent: "space-between", marginTop: 6, paddingTop: 6, borderTop: "1px dashed #E0D5C0" }}>
-                      <span style={{ fontWeight: 700, fontSize: 14, color: "#2C1810" }}>Total Amount</span>
-                      <span style={{ fontWeight: 800, fontSize: 18, color: "#C8A96E" }}>₹{total}</span>
+
+              <div
+                style={{
+                  flex: 1,
+                  overflowY: "auto",
+                  padding: "1.2rem",
+                  background: "#FFFDF9"
+                }}
+              >
+                <form onSubmit={handleSubmit}>
+                  <div
+                    className="order-summary-box"
+                    style={{
+                      background: "#FFFFFF",
+                      borderRadius: 18,
+                      padding: "18px",
+                      marginBottom: 22,
+                      border: "1px solid #E8DCC6",
+                      boxShadow: "0 4px 15px rgba(0,0,0,0.05)"
+                    }}
+                  >
+                    <h4
+                      style={{
+                        margin: "0 0 12px 0",
+                        fontSize: 15,
+                        fontWeight: 700,
+                        color: "#2C1810",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: 7
+                      }}
+                    >
+                      <span>🍽️</span>
+                      <span>Your Order Items</span>
+                    </h4>
+
+                    {cart.map((item, idx) => (
+                      <div key={idx} style={rowStyle}>
+                        <span style={{ color: "#2C1810" }}>
+                          {item.name} x {item.quantity}
+                        </span>
+                        <strong style={{ color: "#C8A96E", fontSize: 13 }}>
+                          ₹{item.price * item.quantity}
+                        </strong>
+                      </div>
+                    ))}
+
+                    <div style={{ borderTop: "1px dashed #E0D5C0", marginTop: 10, paddingTop: 10 }}>
+                      <div style={rowStyle}>
+                        <span style={{ color: "#8C7B6B" }}>Subtotal</span>
+                        <span style={{ color: "#2C1810" }}>₹{subtotal}</span>
+                      </div>
+
+                      <div style={rowStyle}>
+                        <span style={{ color: "#8C7B6B" }}>Delivery Fee</span>
+                        <span style={{ color: "#2C1810" }}>
+                          {deliveryFee === 0 ? "Free" : `₹${deliveryFee}`}
+                        </span>
+                      </div>
+
+                      <div style={rowStyle}>
+                        <span style={{ color: "#8C7B6B" }}>Packaging Fee</span>
+                        <span style={{ color: "#2C1810" }}>₹{packagingFee}</span>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          borderTop: "1px solid #E8DCC6",
+                          marginTop: 9,
+                          paddingTop: 10
+                        }}
+                      >
+                        <strong style={{ color: "#2C1810", fontSize: 15 }}>Total Amount</strong>
+                        <strong style={{ color: "#C8A96E", fontSize: 21 }}>₹{total}</strong>
+                      </div>
                     </div>
                   </div>
-                </div>
-                
-                {/* Full Name */}
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Full Name <span style={{ color: "#e74c3c" }}>*</span></label>
-                  <input type="text" required value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, outline: "none", transition: "border-color 0.2s" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="Enter your full name" />
-                </div>
-                
-                {/* Phone Number */}
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Phone Number <span style={{ color: "#e74c3c" }}>*</span></label>
-                  <input type="tel" required value={formData.phone} onChange={(e) => setFormData({ ...formData, phone: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="Enter your phone number" />
-                </div>
-                
-                {/* Delivery Address */}
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Delivery Address <span style={{ color: "#e74c3c" }}>*</span></label>
-                  <textarea required rows={2} value={formData.address} onChange={(e) => setFormData({ ...formData, address: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, fontFamily: "'DM Sans', sans-serif", resize: "none", outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="House/Flat No., Street, Area" />
-                </div>
-                
-                {/* City and Pincode */}
-                <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>City <span style={{ color: "#e74c3c" }}>*</span></label>
-                    <input type="text" required value={formData.city} onChange={(e) => setFormData({ ...formData, city: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="City" />
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Pincode <span style={{ color: "#e74c3c" }}>*</span></label>
-                    <input type="text" required value={formData.pincode} onChange={(e) => setFormData({ ...formData, pincode: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="Pincode" />
-                  </div>
-                </div>
-                
-                {/* Landmark */}
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Landmark (Optional)</label>
-                  <input type="text" value={formData.landmark} onChange={(e) => setFormData({ ...formData, landmark: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 13, outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="Nearby landmark" />
-                </div>
-                
-                {/* Payment Method */}
-                <div style={{ marginBottom: 12 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 6 }}>Payment Method <span style={{ color: "#e74c3c" }}>*</span></label>
-                  <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
-                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                      <input type="radio" name="paymentMethod" value="cod" checked={formData.paymentMethod === "cod"} onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })} style={{ cursor: "pointer" }} />
-                      <span style={{ fontSize: 13 }}>💰 Cash on Delivery</span>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={labelStyle}>
+                      Full Name <span style={{ color: "#e74c3c" }}>*</span>
                     </label>
-                    <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-                      <input type="radio" name="paymentMethod" value="card" checked={formData.paymentMethod === "card"} onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })} style={{ cursor: "pointer" }} />
-                      <span style={{ fontSize: 13 }}>💳 Card / UPI</span>
-                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      style={inputStyle}
+                      placeholder="Enter your full name"
+                    />
                   </div>
-                </div>
-                
-                {/* Special Instructions */}
-                <div style={{ marginBottom: 18 }}>
-                  <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#2C1810", marginBottom: 4 }}>Special Instructions (Optional)</label>
-                  <textarea rows={2} value={formData.notes} onChange={(e) => setFormData({ ...formData, notes: e.target.value })} style={{ width: "100%", padding: "10px 14px", border: "1px solid #ddd", borderRadius: 10, fontSize: 12, fontFamily: "'DM Sans', sans-serif", resize: "none", outline: "none" }} onFocus={(e) => e.target.style.borderColor = "#C8A96E"} onBlur={(e) => e.target.style.borderColor = "#ddd"} placeholder="Any special requests? (e.g., extra spicy, less sugar)" />
-                </div>
-                
-                {/* Submit Button */}
-                <button type="submit" disabled={isProcessing} style={{ width: "100%", padding: "14px", background: isProcessing ? "#B0A090" : "linear-gradient(135deg, #C8A96E, #B8942E)", color: "#FFFFFF", border: "none", borderRadius: 40, fontSize: 15, fontWeight: 700, cursor: isProcessing ? "not-allowed" : "pointer", display: "flex", alignItems: "center", justifyContent: "center", gap: 8, transition: "all 0.2s" }}>
-                  {isProcessing ? "⏳ Processing..." : "✅ Place Order"}
-                </button>
-              </form>
-            </div>
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={labelStyle}>
+                      Phone Number <span style={{ color: "#e74c3c" }}>*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      style={inputStyle}
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={labelStyle}>
+                      Delivery Address <span style={{ color: "#e74c3c" }}>*</span>
+                    </label>
+                    <textarea
+                      required
+                      rows={2}
+                      value={formData.address}
+                      onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                      style={{ ...inputStyle, resize: "none" }}
+                      placeholder="House/Flat No., Street, Area"
+                    />
+                  </div>
+
+                  <div style={{ display: "flex", gap: 12, marginBottom: 12 }}>
+                    <div style={{ flex: 1 }}>
+                      <label style={labelStyle}>
+                        City <span style={{ color: "#e74c3c" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        style={inputStyle}
+                        placeholder="City"
+                      />
+                    </div>
+
+                    <div style={{ flex: 1 }}>
+                      <label style={labelStyle}>
+                        Pincode <span style={{ color: "#e74c3c" }}>*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.pincode}
+                        onChange={(e) => setFormData({ ...formData, pincode: e.target.value })}
+                        style={inputStyle}
+                        placeholder="Pincode"
+                      />
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 12 }}>
+                    <label style={labelStyle}>Landmark (Optional)</label>
+                    <input
+                      type="text"
+                      value={formData.landmark}
+                      onChange={(e) => setFormData({ ...formData, landmark: e.target.value })}
+                      style={inputStyle}
+                      placeholder="Nearby landmark"
+                    />
+                  </div>
+
+                  <div style={{ marginBottom: 14 }}>
+                    <label style={labelStyle}>
+                      Payment Method <span style={{ color: "#e74c3c" }}>*</span>
+                    </label>
+
+                    <div style={{ display: "flex", gap: 20, flexWrap: "wrap" }}>
+                      <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", color: "#2C1810" }}>
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="cod"
+                          checked={formData.paymentMethod === "cod"}
+                          onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
+                        />
+                        💰 Cash on Delivery
+                      </label>
+
+                      <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", color: "#2C1810" }}>
+                        <input
+                          type="radio"
+                          name="paymentMethod"
+                          value="card"
+                          checked={formData.paymentMethod === "card"}
+                          onChange={(e) => setFormData({ ...formData, paymentMethod: e.target.value })}
+                        />
+                        💳 Card / UPI
+                      </label>
+                    </div>
+                  </div>
+
+                  <div style={{ marginBottom: 16 }}>
+                    <label style={labelStyle}>Special Instructions (Optional)</label>
+                    <textarea
+                      rows={2}
+                      value={formData.notes}
+                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                      style={{ ...inputStyle, resize: "none" }}
+                      placeholder="Any special requests? (e.g., extra spicy, less sugar)"
+                    />
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={isProcessing}
+                    style={{
+                      width: "100%",
+                      padding: "14px",
+                      background: isProcessing ? "#B0A090" : "linear-gradient(135deg, #C8A96E, #B8942E)",
+                      color: "#FFFFFF",
+                      border: "none",
+                      borderRadius: 40,
+                      fontSize: 16,
+                      fontWeight: 700,
+                      cursor: isProcessing ? "not-allowed" : "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 8
+                    }}
+                  >
+                    {isProcessing ? "⏳ Processing..." : "✅ Place Order"}
+                  </button>
+                </form>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
-// Success Modal with Full Order Details
+// Success Modal - Properly Centered
 function SuccessModal({ isOpen, onClose, orderDetails }) {
   useEffect(() => {
     if (isOpen) {
@@ -357,16 +649,72 @@ function SuccessModal({ isOpen, onClose, orderDetails }) {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            style={{ position: "fixed", inset: 0, background: "rgba(44,24,16,0.7)", backdropFilter: "blur(4px)", zIndex: 2000 }}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(44,24,16,0.55)",
+              backdropFilter: "blur(3px)",
+              zIndex: 2000
+            }}
           />
+          
           <motion.div
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            style={{ position: "fixed", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: "90%", maxWidth: 420, background: "#FFFFFF", borderRadius: 32, padding: "1.5rem", textAlign: "center", zIndex: 2001, boxShadow: "0 25px 50px rgba(0,0,0,0.3)", maxHeight: "90vh", overflowY: "auto" }}
+            initial={{
+              scale: 0.8,
+              opacity: 0,
+              x: "-50%",
+              y: "-45%"
+            }}
+            animate={{
+              scale: 1,
+              opacity: 1,
+              x: "-50%",
+              y: "-50%"
+            }}
+            exit={{
+              scale: 0.8,
+              opacity: 0,
+              x: "-50%",
+              y: "-45%"
+            }}
+            transition={{
+              type: "spring",
+              stiffness: 300,
+              damping: 30
+            }}
+            style={{
+              position: "fixed",
+              top: "50%",
+              left: "50%",
+              width: "90%",
+              maxWidth: 420,
+              background: "#FFFFFF",
+              borderRadius: 32,
+              padding: "1.5rem",
+              textAlign: "center",
+              zIndex: 2001,
+              boxShadow: "0 25px 50px -12px rgba(0,0,0,0.3)",
+              maxHeight: "90vh",
+              overflowY: "auto"
+            }}
           >
-            <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} transition={{ delay: 0.2, type: "spring" }} style={{ width: 70, height: 70, background: "#4CAF50", borderRadius: 50, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 15px" }}><span style={{ fontSize: 42, color: "#FFFFFF" }}>✓</span></motion.div>
+            <motion.div 
+              initial={{ scale: 0 }} 
+              animate={{ scale: 1 }} 
+              transition={{ delay: 0.2, type: "spring" }} 
+              style={{ 
+                width: 70, 
+                height: 70, 
+                background: "#4CAF50", 
+                borderRadius: 50, 
+                display: "flex", 
+                alignItems: "center", 
+                justifyContent: "center", 
+                margin: "0 auto 15px" 
+              }}
+            >
+              <span style={{ fontSize: 42, color: "#FFFFFF" }}>✓</span>
+            </motion.div>
             
             <h2 style={{ color: "#2C1810", marginBottom: 6, fontSize: 22 }}>Order Placed Successfully!</h2>
             <p style={{ color: "#8C7B6B", marginBottom: 6, fontSize: 13 }}>Thank you for ordering from BhagyaLakshmi</p>
@@ -391,10 +739,24 @@ function SuccessModal({ isOpen, onClose, orderDetails }) {
                 </div>
               ))}
               <div style={{ borderTop: "1px solid #E0D5C0", marginTop: 6, paddingTop: 6 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}><span style={{ fontSize: 11, color: "#8C7B6B" }}>Subtotal</span><span style={{ fontSize: 11 }}>₹{orderDetails.subtotal}</span></div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}><span style={{ fontSize: 11, color: "#8C7B6B" }}>Delivery Fee</span><span style={{ fontSize: 11 }}>{orderDetails.deliveryFee === 0 ? "Free" : `₹${orderDetails.deliveryFee}`}</span></div>
-                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}><span style={{ fontSize: 11, color: "#8C7B6B" }}>Packaging Fee</span><span style={{ fontSize: 11 }}>₹{orderDetails.packagingFee}</span></div>
-                <div style={{ borderTop: "1px solid #E0D5C0", marginTop: 4, paddingTop: 4 }}><div style={{ display: "flex", justifyContent: "space-between" }}><span style={{ fontWeight: 700, fontSize: 13, color: "#2C1810" }}>Total Paid</span><span style={{ fontWeight: 800, fontSize: 16, color: "#C8A96E" }}>₹{orderDetails.total}</span></div></div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+                  <span style={{ fontSize: 11, color: "#8C7B6B" }}>Subtotal</span>
+                  <span style={{ fontSize: 11 }}>₹{orderDetails.subtotal}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 2 }}>
+                  <span style={{ fontSize: 11, color: "#8C7B6B" }}>Delivery Fee</span>
+                  <span style={{ fontSize: 11 }}>{orderDetails.deliveryFee === 0 ? "Free" : `₹${orderDetails.deliveryFee}`}</span>
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+                  <span style={{ fontSize: 11, color: "#8C7B6B" }}>Packaging Fee</span>
+                  <span style={{ fontSize: 11 }}>₹{orderDetails.packagingFee}</span>
+                </div>
+                <div style={{ borderTop: "1px solid #E0D5C0", marginTop: 4, paddingTop: 4 }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <span style={{ fontWeight: 700, fontSize: 13, color: "#2C1810" }}>Total Paid</span>
+                    <span style={{ fontWeight: 800, fontSize: 16, color: "#C8A96E" }}>₹{orderDetails.total}</span>
+                  </div>
+                </div>
               </div>
             </div>
             
@@ -409,7 +771,22 @@ function SuccessModal({ isOpen, onClose, orderDetails }) {
               <p style={{ fontSize: 12, color: "#2E7D32", marginBottom: 0 }}>🚚 Estimated Delivery Time: 45-60 minutes</p>
             </div>
             
-            <button onClick={onClose} style={{ background: "linear-gradient(135deg, #C8A96E, #B8942E)", color: "#FFFFFF", border: "none", borderRadius: 35, padding: "12px 28px", fontSize: 13, fontWeight: 600, cursor: "pointer", width: "100%" }}>Continue Shopping →</button>
+            <button 
+              onClick={onClose} 
+              style={{ 
+                background: "linear-gradient(135deg, #C8A96E, #B8942E)", 
+                color: "#FFFFFF", 
+                border: "none", 
+                borderRadius: 35, 
+                padding: "12px 28px", 
+                fontSize: 13, 
+                fontWeight: 600, 
+                cursor: "pointer", 
+                width: "100%" 
+              }}
+            >
+              Continue Shopping →
+            </button>
           </motion.div>
         </>
       )}
@@ -464,11 +841,8 @@ export default function Order() {
     return matchesCategory && matchesSearch;
   });
   
-  const { scrollYProgress } = useScroll();
-  const headerBg = useTransform(scrollYProgress, [0, 0.1], ["rgba(251,246,238,0)", "rgba(251,246,238,0.95)"]);
-  
   return (
-    <div style={{ minHeight: "100vh", background: "#FBF6EE", fontFamily: "'DM Sans', sans-serif", paddingTop: "68px" }}>
+    <div style={{ minHeight: "100vh", background: "#FBF6EE", fontFamily: "'DM Sans', sans-serif" }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -479,54 +853,111 @@ export default function Order() {
         input, textarea { font-family: 'DM Sans', sans-serif; }
       `}</style>
       
-      {/* Fixed Header */}
-      <motion.nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: headerBg, backdropFilter: "blur(12px)", borderBottom: "1px solid #F0E8D6", padding: "0 1.5rem", height: 68, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 10, cursor: "pointer" }} onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
-          <div style={{ width: 38, height: 38, background: "linear-gradient(135deg, #C8A96E, #B8942E)", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>✦</div>
-          <div><div style={{ fontFamily: "'Playfair Display', serif", fontSize: 15, fontWeight: 700, color: "#2C1810" }}>BhagyaLakshmi</div><div style={{ fontSize: 7, color: "#C8A96E", letterSpacing: "0.15em", fontWeight: 600, textTransform: "uppercase" }}>Snacks Corner</div></div>
-        </div>
-        <div style={{ position: "relative" }}>
-          <input type="text" placeholder="Search menu..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} style={{ padding: "7px 14px 7px 36px", borderRadius: 30, border: "1px solid #E0D5C0", background: "#FFFFFF", fontSize: 12, width: 200, outline: "none" }} />
-          <span style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", fontSize: 13 }}>🔍</span>
-        </div>
-        <motion.button whileTap={{ scale: 0.95 }} whileHover={{ scale: 1.05 }} onClick={() => setCartOpen(true)} style={{ position: "relative", background: "#2C1810", color: "#F5E8C8", border: "none", borderRadius: 35, padding: "6px 16px", fontSize: 12, fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>🛒 Cart{totalItems > 0 && <span style={{ background: "#C8A96E", color: "#2C1810", borderRadius: 50, width: 19, height: 19, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 9, fontWeight: 800 }}>{totalItems}</span>}</motion.button>
-      </motion.nav>
+      {/* Hero Section */}
+      <div style={{ textAlign: "center", padding: "2rem 1rem", background: "linear-gradient(135deg, #FDF3E0, #F5E8C8)" }}>
+        <span style={{ fontSize: 48, display: "block", marginBottom: 8 }}>🍔</span>
+        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.8rem, 5vw, 2.5rem)", fontWeight: 800, color: "#2C1810", margin: 0 }}>Order <span style={{ color: "#C8A96E" }}>Online</span></h1>
+        <p style={{ fontSize: 14, color: "#8C7B6B", maxWidth: 500, margin: "0.5rem auto 0" }}>Freshly prepared with love. Delivered to your doorstep.</p>
+      </div>
       
-      {/* Hero */}
-      <div style={{ textAlign: "center", padding: "1.5rem 1rem", background: "linear-gradient(135deg, #FDF3E0, #F5E8C8)" }}>
-        <h1 style={{ fontFamily: "'Playfair Display', serif", fontSize: "clamp(1.6rem, 5vw, 2.2rem)", fontWeight: 800, color: "#2C1810", margin: 0 }}>Order <span style={{ color: "#C8A96E" }}>Online</span></h1>
-        <p style={{ fontSize: 12, color: "#8C7B6B", maxWidth: 400, margin: "0.3rem auto 0" }}>Freshly prepared with love. Delivered to your doorstep.</p>
+      {/* Search Bar */}
+      <div style={{ maxWidth: 600, margin: "1rem auto 0", padding: "0 1rem" }}>
+        <div style={{ position: "relative" }}>
+          <input 
+            type="text" 
+            placeholder="Search for your favorite items..." 
+            value={searchTerm} 
+            onChange={(e) => setSearchTerm(e.target.value)} 
+            style={{ 
+              width: "100%", 
+              padding: "12px 20px 12px 45px", 
+              borderRadius: 50, 
+              border: "1px solid #E0D5C0", 
+              background: "#FFFFFF", 
+              fontSize: 14, 
+              outline: "none",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+              transition: "all 0.3s ease"
+            }} 
+            onFocus={(e) => e.target.style.borderColor = "#C8A96E"}
+            onBlur={(e) => e.target.style.borderColor = "#E0D5C0"}
+          />
+          <span style={{ position: "absolute", left: 18, top: "50%", transform: "translateY(-50%)", fontSize: 16, color: "#C8A96E" }}>🔍</span>
+        </div>
       </div>
       
       {/* Categories */}
-      <div style={{ padding: "0.5rem 1rem", display: "flex", gap: 5, overflowX: "auto", borderBottom: "1px solid #F0E8D6", background: "#FFFFFF", position: "sticky", top: 68, zIndex: 49 }}>
+      <div style={{ padding: "1rem 1rem", display: "flex", gap: 8, overflowX: "auto", borderBottom: "1px solid #F0E8D6", background: "#FFFFFF", position: "sticky", top: 0, zIndex: 49, marginTop: "1rem" }}>
         {CATEGORIES.map(cat => (
-          <motion.button key={cat} whileTap={{ scale: 0.95 }} onClick={() => setActiveCategory(cat)} style={{ padding: "4px 12px", borderRadius: 25, background: activeCategory === cat ? "#C8A96E" : "transparent", color: activeCategory === cat ? "#FFFFFF" : "#8C7B6B", border: activeCategory === cat ? "none" : "1px solid #E0D5C0", fontSize: 11, fontWeight: 600, cursor: "pointer", whiteSpace: "nowrap" }}>{cat}</motion.button>
+          <motion.button 
+            key={cat} 
+            whileTap={{ scale: 0.95 }} 
+            onClick={() => setActiveCategory(cat)} 
+            style={{ 
+              padding: "6px 16px", 
+              borderRadius: 30, 
+              background: activeCategory === cat ? "linear-gradient(135deg, #C8A96E, #B8942E)" : "transparent", 
+              color: activeCategory === cat ? "#FFFFFF" : "#8C7B6B", 
+              border: activeCategory === cat ? "none" : "1px solid #E0D5C0", 
+              fontSize: 12, 
+              fontWeight: 600, 
+              cursor: "pointer", 
+              whiteSpace: "nowrap",
+              transition: "all 0.2s ease"
+            }}
+          >
+            {cat}
+          </motion.button>
         ))}
+      </div>
+      
+      {/* Results Count */}
+      <div style={{ maxWidth: 1300, margin: "0 auto", padding: "1rem 1.2rem 0" }}>
+        <p style={{ fontSize: 13, color: "#8C7B6B", fontFamily: "'DM Sans', sans-serif" }}>
+          Showing {filteredItems.length} items
+        </p>
       </div>
       
       {/* Menu Grid */}
       <div style={{ maxWidth: 1300, margin: "0 auto", padding: "1.2rem" }}>
         <AnimatePresence mode="popLayout">
           {filteredItems.length === 0 ? (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ textAlign: "center", padding: "2rem" }}><div style={{ fontSize: 48, marginBottom: 10 }}>🔍</div><h3 style={{ color: "#2C1810", fontSize: 16 }}>No items found</h3><p style={{ color: "#8C7B6B", fontSize: 12 }}>Try a different search or category</p></motion.div>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} style={{ textAlign: "center", padding: "3rem" }}>
+              <div style={{ fontSize: 64, marginBottom: 16 }}>🔍</div>
+              <h3 style={{ color: "#2C1810", fontSize: 18 }}>No items found</h3>
+              <p style={{ color: "#8C7B6B", fontSize: 13 }}>Try a different search or category</p>
+            </motion.div>
           ) : (
-            <motion.div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "1rem" }}>
-              {filteredItems.map((item) => (<MenuItemCard key={item.id} item={item} onAddToCart={addToCart} cartCount={cart[item.id]?.quantity || 0} />))}
+            <motion.div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1.5rem" }}>
+              {filteredItems.map((item) => (
+                <MenuItemCard key={item.id} item={item} onAddToCart={addToCart} cartCount={cart[item.id]?.quantity || 0} />
+              ))}
             </motion.div>
           )}
         </AnimatePresence>
       </div>
       
-      {/* Floating Cart Button */}
+      {/* Floating Cart Summary */}
       {totalItems > 0 && !cartOpen && (
         <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0, opacity: 0 }} style={{ position: "fixed", bottom: 20, left: "50%", transform: "translateX(-50%)", zIndex: 90 }}>
-          <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }} onClick={() => setCartOpen(true)} style={{ background: "#2C1810", border: "1px solid #C8A96E", borderRadius: 50, padding: "8px 20px", color: "#F5E8C8", fontSize: 12, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 10, boxShadow: "0 4px 12px rgba(0,0,0,0.15)" }}><span>🛒 {totalItems} items</span><span style={{ width: 1, height: 14, background: "#C8A96E" }} /><span>₹{totalPrice}</span><span>→</span></motion.button>
+          <motion.button whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.95 }} onClick={() => setCartOpen(true)} style={{ background: "#2C1810", border: "1px solid #C8A96E", borderRadius: 50, padding: "10px 24px", color: "#F5E8C8", fontSize: 13, fontWeight: 700, cursor: "pointer", display: "flex", alignItems: "center", gap: 12, boxShadow: "0 8px 20px rgba(0,0,0,0.15)" }}>
+            <span>🛒 {totalItems} items</span>
+            <span style={{ width: 1, height: 16, background: "#C8A96E" }} />
+            <span>₹{totalPrice}</span>
+            <span>→</span>
+          </motion.button>
         </motion.div>
       )}
       
       {/* Cart Sidebar */}
-      <AnimatePresence>{cartOpen && (<><motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setCartOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(44,24,16,0.5)", backdropFilter: "blur(4px)", zIndex: 999 }} /><CartSidebar cart={cartItemsList} onUpdateQuantity={updateQuantity} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} /></>)}</AnimatePresence>
+      <AnimatePresence>
+        {cartOpen && (
+          <>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setCartOpen(false)} style={{ position: "fixed", inset: 0, background: "rgba(44,24,16,0.5)", backdropFilter: "blur(2px)", zIndex: 999 }} />
+            <CartSidebar cart={cartItemsList} onUpdateQuantity={updateQuantity} onClose={() => setCartOpen(false)} onCheckout={handleCheckout} />
+          </>
+        )}
+      </AnimatePresence>
       
       {/* Checkout Modal */}
       <CheckoutModal isOpen={checkoutOpen} onClose={() => setCheckoutOpen(false)} cart={cartItemsList} onSubmit={handleOrderSubmit} />
